@@ -57,7 +57,7 @@ body {
   font-style: normal;
 }
 
-#loadQuote {
+#loadQuote, #automateQuote  {
   position: fixed;
   width: 12em;
   display: inline-block;
@@ -71,10 +71,16 @@ body {
   padding: 15px 0;
   transition: .5s ;
 }
-#loadQuote:hover {
+
+#automateQuote {
+  bottom: 235px;
+}
+
+
+#loadQuote:hover, #automateQuote:hover {
   background-color: rgba(255,255,255,.25);
 }
-#loadQuote:focus {
+#loadQuote:focus, #automateQuote:focus{
   outline: none;
 }
 
