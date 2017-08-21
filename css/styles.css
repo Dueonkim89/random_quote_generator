@@ -42,22 +42,12 @@ body {
   text-align: right;
   margin-right: 4em;
 }
-.source:before {
-  content: "—";
-}
+
 .citation {
   font-style: italic;
 }
-.citation:before {
-  content: ", ";
-  font-style: normal;
-}
-.year:before {
-  content: ", ";
-  font-style: normal;
-}
 
-#loadQuote, #automateQuote  {
+#loadQuote, #automateQuote, #disableAutomate   {
   position: fixed;
   width: 12em;
   display: inline-block;
@@ -72,15 +62,15 @@ body {
   transition: .5s ;
 }
 
-#automateQuote {
+#automateQuote, #disableAutomate {
   bottom: 235px;
 }
 
 
-#loadQuote:hover, #automateQuote:hover {
+#loadQuote:hover, #automateQuote:hover, #disableAutomate:hover {
   background-color: rgba(255,255,255,.25);
 }
-#loadQuote:focus, #automateQuote:focus{
+#loadQuote:focus, #automateQuote:focus, #disableAutomate:hover  {
   outline: none;
 }
 

@@ -21,35 +21,71 @@ citation: 'The Pursuit of Excellence', year: 1994, category: 'inspiration' }
 //array to log previous random numbers
 var randomNumberList = [];
 
-//boolean value for duplicate
-var duplicate = false;
-
 //array for background colors
-var backGroundColorList = [ '#36b55c', '#8A2BE2', '#DC143C', '#008B8B', '#D3D3D3', '#1E90FF', '#BDB76B' ];
+var backGroundColorList = [ '#36b55c', '#8A2BE2', '#DC143C', '#FF1493', '#000', '#1E90FF', '#BDB76B' ];
+
+//count variable
+var count;
+
 
 //function to return an original quote. (no duplicates)
-function getRandomQuote() {
-	var number = Math.floor((Math.random() * quotes.length));
-	for (i = 0; i <randomNumberList.length; i++) {
-		if (randomNumberList[i] === number) {
-			duplicate = true;
-		}
-	}
-	if (duplicate) {
-		return getRandomQuote();
-	} else {
-		randomNumberList.push(number);
-		return number;
-	}
+function getRandomQuote(count) {
+	return quotes[randomNumberList[count]];
+}
+
+function printQuote(count) {
+	randomNumberList.length === 7 ? randomNumberList.length = 0 : false;
+	var referenceNumber = getRandomQuote(count);
+	// set bodybackground color based off number
+	document.body.style.backgroundColor = backGroundColorList[randomNumberList[count]];
+	
+	//set the quote up.
+	
+	console.log(referenceNumber);
+	console.log(randomNumberList);
+}
+
+function autoGenerate() {
+	//to be worked on.. use set time out
 }
 
 
+//window load event, draw numbers ASAP.
+window.onload = function drawNumbers() {
+	console.log('loaded');
+	while (randomNumberList.length < 7) {
+		var number = Math.floor((Math.random() * quotes.length));
+		if (randomNumberList.indexOf(number) > -1) {
+			continue;	//much better than a recursive function. uses ALOT LESS CALL STACK!
+		} else {
+			randomNumberList.push(number);
+		}
+	}
+	console.log(randomNumberList);
+	document.body.style.backgroundColor = backGroundColorList[randomNumberList[0]];
+	
+}
 
 
+// event listener to respond to the different button click events.
 
-
-// event listener to respond to "Show another quote" button clicks
-// when user clicks anywhere on the button, the "printQuote" function is called
-document.getElementById('loadQuote').addEventListener("click", printQuote, false);
-
-document.getElementById('automateQuote').addEventListener("click", printQuote, false);
+//delegate event handler 
+document.addEventListener("click", function(event) {
+	var loadQuoteButton = document.getElementById('loadQuote');
+	if (event.target.id === 'disableAutomate') {
+		//cancel set time out
+		
+		loadQuoteButton.style.display = '';
+		document.getElementById('disableAutomate').innerText = 'Auto-Generate Quote';
+		document.getElementById('disableAutomate').id = 'automateQuote';			
+	} else if (event.target.id === 'automateQuote') {
+		loadQuoteButton.style.display = 'none';
+		document.getElementById('automateQuote').innerText = 'Disable Auto-Generate';
+		document.getElementById('automateQuote').id = 'disableAutomate';	
+		//invoke the autoGenerate function.
+	} else if (event.target.id === 'loadQuote') {
+		count = 1;
+		printQuote(count);
+		count ++;
+	}
+});
