@@ -18,6 +18,9 @@ citation: 'The Pursuit of Excellence', year: 1994, category: 'inspiration' }
 //array to log previous random numbers
 var randomNumberList = [];
 
+//array to log the delays
+var numberOfDelays = [];
+
 //array for background colors
 var backGroundColorList = [ '#36b55c', '#8A2BE2', '#DC143C', '#FF1493', '#000', '#1E90FF', '#BDB76B' ];
 
@@ -27,6 +30,7 @@ var count = 0;
 // variables for the DOM, we will be constructing.
 var quote = document.getElementsByClassName('quote')[0];
 var source = document.getElementsByClassName('source')[0];
+
 
 //function to return an original quote. (no duplicates)
 function getRandomQuote(count) {
@@ -52,8 +56,28 @@ function printQuote(count) {
 	}	
 }
 
-function autoGenerate() {
-	//to be worked on.. use set time out
+function autoGenerate(count) {
+	count += 1;
+	//named function declaration for the set time out. 5 sec delay per quote.
+	function setDelay(count, autoTimer) {
+		setTimeout(function(){
+			printQuote(count);
+		}, 5000 * autoTimer);		
+	}
+	
+	//if count less than 7
+	if (count < 7) {
+		//for loop until we get to 6. increment the autoTimer and the count
+		for (i = count, autoTimer = 1; i < 7; i++, autoTimer++) {
+			numberOfDelays.push(setDelay(i, autoTimer)); 
+		}
+	// else 20 random quotes.	
+	} else {
+		for (i = 0, autoTimer = 1; i < 20; i++, autoTimer++) {
+			setDelay(Math.floor((Math.random() * quotes.length)), autoTimer); 
+		}
+	}
+	console.log(numberOfDelays);
 }
 
 
@@ -67,26 +91,29 @@ window.onload = function drawNumbers() {
 			randomNumberList.push(number);
 		}
 	}
-	// KEEP IT DRY!!
+	// KEEP IT DRY!!, count starts at 0. 
 	printQuote(count);
 }
-
 
 //delegate event handler to respond to the different button click events.
 document.addEventListener("click", function(event) {
 	var loadQuoteButton = document.getElementById('loadQuote');
 	if (event.target.id === 'disableAutomate') {
 		//cancel set time out if disabled button clicked.
+		//	clearInterval(setAutomation);
 		
+		
+		//sync button settings
 		loadQuoteButton.style.display = '';
 		document.getElementById('disableAutomate').innerText = 'Auto-Generate Quote';
 		document.getElementById('disableAutomate').id = 'automateQuote';			
 	} else if (event.target.id === 'automateQuote') {
+		//sync button settings
 		loadQuoteButton.style.display = 'none';
 		document.getElementById('automateQuote').innerText = 'Disable Auto-Generate';
 		document.getElementById('automateQuote').id = 'disableAutomate';	
 		//invoke the autoGenerate function.
-		
+		autoGenerate(count);		
 	} else if (event.target.id === 'loadQuote') {
 		count += 1;
 		//ternary operator, if count greater or equal to 7, run random number, else run order of count
